@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">EatIt-Shipper</string>
+    <string name="slogan">Per Aspera Ad Astra</string>
+    <string name="main_fbutton_continue">Continue</string>
+    <string name="signin_phone_number_hint">Phone Number</string>
+    <string name="signin_phone_number_text">8888</string>
+    <string name="signin_password_hint">Password</string>
+    <string name="signin_password_text">1234</string>
+    <string name="signin_fbutton_text">Sign In</string>
+    <string name="to_fbutton_shipped_text">SHIPPED</string>
+    <string name="to_fbutton_call_text">CALL</string>
+    <string name="tv_order_id_text">#111111</string>
+    <string name="tv_order_date_text">Order Date</string>
+    <string name="tv_status_text">Status</string>
+    <string name="tv_phone_number_text">123456789</string>
+    <string name="tv_address_text">Address</string>
+    <string name="fbutton_shipping_text">Shipping</string>
 </resources>

@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EatItShipper">
         <activity
+            android:name=".TrackingOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
