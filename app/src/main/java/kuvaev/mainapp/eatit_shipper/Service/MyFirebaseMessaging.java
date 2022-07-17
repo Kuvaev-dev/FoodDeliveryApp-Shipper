@@ -1,5 +1,6 @@
 package kuvaev.mainapp.eatit_shipper.Service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +36,7 @@ public class MyFirebaseMessaging extends Service {
             sendNotification(remoteMessage);
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void sendNotificationAPI26(RemoteMessage remoteMessage) {
         Map<String , String> data = remoteMessage.getData();
@@ -82,7 +84,7 @@ public class MyFirebaseMessaging extends Service {
 
         Intent intent = new Intent(this , HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this , 0 , intent ,
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getActivity(this , 0 , intent ,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
