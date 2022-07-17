@@ -10,9 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
@@ -45,10 +42,8 @@ public class Common {
         if (connectivityManager != null){
             NetworkInfo[] info = connectivityManager.getAllNetworkInfo();
             if (info != null){
-
-                for (int i = 0; i < info.length; i++) {
-
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                for (NetworkInfo networkInfo : info) {
+                    if (networkInfo.getState() == NetworkInfo.State.CONNECTED)
                         return true;
                 }
             }
@@ -57,14 +52,16 @@ public class Common {
     }
 
     public static String convertCodeToStatus(String code){
-        if (code.equals("0"))
-            return "Placed";
-        else if (code.equals("1"))
-            return "On my way";
-        else if (code.equals("2"))
-            return "Shipping";
-        else
-            return "Shipped";
+        switch (code) {
+            case "0":
+                return "Placed";
+            case "1":
+                return "On my way";
+            case "2":
+                return "Shipping";
+            default:
+                return "Shipped";
+        }
     }
 
     public static String getData(long time){
@@ -87,12 +84,7 @@ public class Common {
         FirebaseDatabase.getInstance().getReference(SHIPPER_INFO_TABLE)
                 .child(key)
                 .setValue(shippingInformation)
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("ERROR" , e.getMessage());
-                    }
-                });
+                .addOnFailureListener(e -> Log.d("ERROR" , e.getMessage()));
     }
 
     public static void updateShippingInformation(String currentKey, Location mLastLocation) {
@@ -104,12 +96,7 @@ public class Common {
                 .getReference(SHIPPER_INFO_TABLE)
                 .child(currentKey)
                 .updateChildren(update_location)
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("ERROR" , e.getMessage());
-                    }
-                });
+                .addOnFailureListener(e -> Log.d("ERROR" , e.getMessage()));
     }
 
     public static GoogleAPIAction getGeoCodeService(){

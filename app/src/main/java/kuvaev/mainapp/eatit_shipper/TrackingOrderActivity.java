@@ -2,7 +2,6 @@ package kuvaev.mainapp.eatit_shipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -18,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -38,8 +36,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
@@ -87,25 +83,20 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-        btn_call = (Button) findViewById(R.id.btn_call);
-        btn_shipped = (Button) findViewById(R.id.btn_shipped);
+        btn_call = findViewById(R.id.btn_call);
+        btn_shipped = findViewById(R.id.btn_shipped);
 
-        btn_call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentCall = new Intent(Intent.ACTION_CALL);
-                intentCall.setData(Uri.parse("tel:" + Common.currentRequest.getPhone()));
+        btn_call.setOnClickListener(v -> {
+            Intent intentCall = new Intent(Intent.ACTION_CALL);
+            intentCall.setData(Uri.parse("tel:" + Common.currentRequest.getPhone()));
 
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                startActivity(intentCall);
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
             }
+            startActivity(intentCall);
         });
 
-        btn_shipped.setOnClickListener(v -> {
-            shippedOrder();
-        });
+        btn_shipped.setOnClickListener(v -> shippedOrder());
 
         mService = Common.getGeoCodeService();
 
@@ -191,7 +182,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     try {
-                        JSONObject jsonObject = new JSONObject(response.body().toString());
+                        JSONObject jsonObject = new JSONObject(response.body());
 
                         String lat = ((JSONArray)jsonObject.get("results"))
                                 .getJSONObject(0)
@@ -228,7 +219,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                                 .enqueue(new Callback<String>() {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
-                                        new ParseTask().doInBackground(response.body().toString());
+                                        new ParseTask().doInBackground(response.body());
                                     }
 
                                     @Override
@@ -270,7 +261,7 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                         .enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
-                                new ParseTask().doInBackground(response.body().toString());
+                                new ParseTask().doInBackground(response.body());
                             }
 
                             @Override
@@ -326,20 +317,16 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
 
 
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+                }).addOnFailureListener(e -> {
+                    mLastLocation.setLatitude(36.192984);
+                    mLastLocation.setLatitude(37.117703);
 
-                mLastLocation.setLatitude(36.192984);
-                mLastLocation.setLatitude(37.117703);
-
-                // Add a marker in Sydney and move the camera
-                LatLng yourLocation = new LatLng(36.192984,37.117703);
-                mCurrentMarker = mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
-            }
-        });
+                    // Add a marker in Sydney and move the camera
+                    LatLng yourLocation = new LatLng(36.192984,37.117703);
+                    mCurrentMarker = mMap.addMarker(new MarkerOptions().position(yourLocation).title("Your location"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(yourLocation));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.0f));
+                });
     }
 
     private class ParseTask extends AsyncTask<String , Integer , List<List<HashMap<String , String>>>> {
@@ -377,11 +364,10 @@ public class TrackingOrderActivity extends FragmentActivity implements OnMapRead
 
             progressDialog.dismiss();
 
-            ArrayList<LatLng> points = new ArrayList<LatLng>();;
-            PolylineOptions lineOptions = new PolylineOptions();;
+            ArrayList<LatLng> points = new ArrayList<>();
+            PolylineOptions lineOptions = new PolylineOptions();
             lineOptions.width(2);
             lineOptions.color(Color.RED);
-            MarkerOptions markerOptions = new MarkerOptions();
             // Traversing through all the routes
             for(int i=0;i<lists.size();i++){
                 // Fetching i-th route

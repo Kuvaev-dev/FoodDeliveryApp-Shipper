@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -31,26 +30,23 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        edt_phone = (MaterialEditText)findViewById(R.id.edtPhone);
-        edt_password = (MaterialEditText)findViewById(R.id.edtPassword);
-        btn_sign_in = (Button)findViewById(R.id.btnSignIn);
+        edt_phone = findViewById(R.id.edtPhone);
+        edt_password = findViewById(R.id.edtPassword);
+        btn_sign_in = findViewById(R.id.btnSignIn);
 
         //Init FireBase
         database = FirebaseDatabase.getInstance();
         shippers = database.getReference(Common.SHIPPERS_TABLE);
 
-        btn_sign_in.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!edt_phone.getText().toString().isEmpty() && !edt_password.getText().toString().isEmpty()){
-                    if (Common.isConnectionToInternet(getApplicationContext()))
-                        login(edt_phone.getText().toString() , edt_password.getText().toString());
-                    else
-                        Toast.makeText(SignInActivity.this, "Please check your connection !", Toast.LENGTH_SHORT).show();
-                }
+        btn_sign_in.setOnClickListener(v -> {
+            if (!edt_phone.getText().toString().isEmpty() && !edt_password.getText().toString().isEmpty()){
+                if (Common.isConnectionToInternet(getApplicationContext()))
+                    login(edt_phone.getText().toString() , edt_password.getText().toString());
                 else
-                    Toast.makeText(SignInActivity.this, "Please all information fields ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignInActivity.this, "Please check your connection !", Toast.LENGTH_SHORT).show();
             }
+            else
+                Toast.makeText(SignInActivity.this, "Please all information fields ", Toast.LENGTH_SHORT).show();
         });
     }
 

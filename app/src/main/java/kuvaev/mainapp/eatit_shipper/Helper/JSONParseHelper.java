@@ -11,10 +11,10 @@ import java.util.List;
 
 public class JSONParseHelper {
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
-        List<List<HashMap<String, String>>> routes = new ArrayList<List<HashMap<String, String>>>();
-        JSONArray jRoutes = null;
-        JSONArray jLegs = null;
-        JSONArray jSteps = null;
+        List<List<HashMap<String, String>>> routes = new ArrayList<>();
+        JSONArray jRoutes;
+        JSONArray jLegs;
+        JSONArray jSteps;
 
         try {
             jRoutes = jObject.getJSONArray("routes");
@@ -30,15 +30,15 @@ public class JSONParseHelper {
 
                     /* Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
-                        String polyline = "";
+                        String polyline;
                         polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List<LatLng> list = decodePoly(polyline);
 
                         /* Traversing all points */
                         for (int l = 0; l < list.size(); l++) {
-                            HashMap<String, String> hm = new HashMap<String, String>();
-                            hm.put("lat", Double.toString(((LatLng) list.get(l)).latitude));
-                            hm.put("lng", Double.toString(((LatLng) list.get(l)).longitude));
+                            HashMap<String, String> hm = new HashMap<>();
+                            hm.put("lat", Double.toString((list.get(l)).latitude));
+                            hm.put("lng", Double.toString((list.get(l)).longitude));
                             path.add(hm);
                         }
                     }
