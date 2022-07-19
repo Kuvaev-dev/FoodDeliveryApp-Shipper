@@ -27,6 +27,7 @@ public class Common {
     public static final String SHIPPERS_TABLE = "Shippers";
     public static final String ORDER_NEED_TO_SHIP_TABLE = "OrdersNeedShip";
     public static final String SHIPPER_INFO_TABLE = "ShippingOrders";
+
     public static final int REQUEST_CODE = 1000;
 
     public static final String baseUrl = "https://maps.googleapis.com";

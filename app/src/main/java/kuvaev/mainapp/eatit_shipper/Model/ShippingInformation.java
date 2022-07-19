@@ -1,8 +1,8 @@
 package kuvaev.mainapp.eatit_shipper.Model;
 
 public class ShippingInformation {
-    private String orderId , shipperPhone;
-    private double lat , lng;
+    private String orderId, shipperPhone;
+    private double lat, lng;
 
     public ShippingInformation() { }
 

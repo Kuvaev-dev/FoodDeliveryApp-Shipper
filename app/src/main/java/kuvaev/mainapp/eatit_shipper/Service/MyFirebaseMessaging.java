@@ -43,7 +43,7 @@ public class MyFirebaseMessaging extends Service {
         String title = data.get("title");
         String message = data.get("message");
 
-        //Here we will fix to click to notification => go to Order list
+        // Here we will fix to click to notification => go to Order list
         PendingIntent pendingIntent;
         NotificationHelper helper;
         Notification.Builder builder;
@@ -63,24 +63,20 @@ public class MyFirebaseMessaging extends Service {
                     defaultSoundUri);
 
             //Get random Id for notification to show all notifications
-            helper.getManager().notify(new Random().nextInt() , builder.build());
-        }
-        else {  //Fix crush when notification send from new system (Common.currentUser == null)
+        } else {  //Fix crush when notification send from new system (Common.currentUser == null)
 
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             helper = new NotificationHelper(this);
             builder = helper.getEatItChannelNotification(title, message, defaultSoundUri);
 
-            helper.getManager().notify(new Random().nextInt() , builder.build());
         }
-
+        helper.getManager().notify(new Random().nextInt() , builder.build());
     }
 
     private void sendNotification(RemoteMessage remoteMessage) {
         Map<String , String> data = remoteMessage.getData();
         String title = data.get("title");
         String message = data.get("message");
-
 
         Intent intent = new Intent(this , HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

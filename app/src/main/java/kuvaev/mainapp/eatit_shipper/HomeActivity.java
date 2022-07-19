@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -52,18 +53,17 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //Check permission
+        // Check permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 requestPermissions(new String[]
-                        {
-                                Manifest.permission.ACCESS_COARSE_LOCATION,
-                                Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.CALL_PHONE
-                        }, Common.REQUEST_CODE);
+                    {
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.CALL_PHONE
+                    }, Common.REQUEST_CODE);
         } else {
             buildLocationRequest();
             buildLocationCallBack();
@@ -72,17 +72,16 @@ public class HomeActivity extends AppCompatActivity {
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
         }
 
-        //Init Firebase
+        // Init Firebase
         database = FirebaseDatabase.getInstance();
         shipperOrders = database.getReference(Common.ORDER_NEED_TO_SHIP_TABLE);
 
-        //Init views
+        // Init views
         recyclerView = (RecyclerView) findViewById(R.id.recycler_orders);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         updateTokenShipper(FirebaseInstallations.getInstance().getToken(true));
-
         loadAllOrderNeedShip(Common.currentShipper.getPhone());
     }
 
@@ -90,24 +89,18 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch (requestCode) {
-            case Common.REQUEST_CODE: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == Common.REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                buildLocationRequest();
+                buildLocationCallBack();
 
-                    buildLocationRequest();
-                    buildLocationCallBack();
-
-                    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        return;
-                    }
-                    fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-                } else
-                    Toast.makeText(this, "you can'use the location Service !", Toast.LENGTH_SHORT).show();
-                break;
-            }
-            default:
-                break;
+                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+            } else
+                Toast.makeText(this, "you can'use the location Service !", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -115,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //For loading OrderNeedShip when back to the activity
+        // For loading OrderNeedShip when back to the activity
         loadAllOrderNeedShip(Common.currentShipper.getPhone());
     }
 
@@ -144,6 +137,7 @@ public class HomeActivity extends AppCompatActivity {
         locationRequest.setFastestInterval(3000);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void loadAllOrderNeedShip(String phone) {
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(
                 Request.class,
@@ -166,20 +160,19 @@ public class HomeActivity extends AppCompatActivity {
                 holder.txtOrderDate.setText(Common.getData(Long.parseLong(Objects.requireNonNull(adapter.getRef(position).getKey()))));
 
                 holder.btnShipping.setOnClickListener(v -> {
-
                     buildLocationRequest();
                     buildLocationCallBack();
 
                     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(HomeActivity.this);
-                    if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                            PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(HomeActivity.this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
+
                     fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-
                     if (mLastLocation == null) {  //ERROR in get location , so set default
-
                         mLastLocation = new Location("36.192984,37.117703");
-
                         mLastLocation.setLatitude(36.192984);
                         mLastLocation.setLongitude(37.117703);
                     }
@@ -206,5 +199,4 @@ public class HomeActivity extends AppCompatActivity {
         Token data = new Token(token , false);
         tokens.child(Common.currentShipper.getPhone()).setValue(data);
     }
-
 }

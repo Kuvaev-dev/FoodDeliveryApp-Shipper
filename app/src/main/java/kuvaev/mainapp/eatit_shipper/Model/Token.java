@@ -14,8 +14,7 @@ public class Token {
         this.isServerToken = isServerToken;
     }
 
-    public Token(Task<InstallationTokenResult> token, boolean isServerToken) {
-    }
+    public Token(Task<InstallationTokenResult> token, boolean isServerToken) { }
 
     public String getToken() {
         return token;
