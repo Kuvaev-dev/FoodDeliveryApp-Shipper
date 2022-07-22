@@ -14,10 +14,13 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -77,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
         shipperOrders = database.getReference(Common.ORDER_NEED_TO_SHIP_TABLE);
 
         // Init views
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_orders);
+        recyclerView = findViewById(R.id.recycler_orders);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -139,27 +142,20 @@ public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void loadAllOrderNeedShip(String phone) {
-        adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(
-                Request.class,
-                R.layout.order_view_layout,
-                OrderViewHolder.class,
-                shipperOrders.child(phone)
-        ) {
-            @NonNull
+        FirebaseRecyclerOptions<Request> options = new FirebaseRecyclerOptions.Builder<Request>().build();
+        new FirebaseRecyclerAdapter<Request, OrderViewHolder>(options) {
             @Override
-            public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return null;
-            }
+            protected void onBindViewHolder(@NonNull OrderViewHolder orderViewHolder,
+                                            int position,
+                                            @NonNull Request model) {
+                shipperOrders.child(phone);
+                orderViewHolder.txtOrderId.setText(adapter.getRef(position).getKey());
+                orderViewHolder.txtOrderStatus.setText(Common.convertCodeToStatus(model.getStatus()));
+                orderViewHolder.txtOrderPhone.setText(model.getPhone());
+                orderViewHolder.txtOrderAddress.setText(model.getAddress());
+                orderViewHolder.txtOrderDate.setText(Common.getData(Long.parseLong(Objects.requireNonNull(adapter.getRef(position).getKey()))));
 
-            @Override
-            protected void onBindViewHolder(@NonNull OrderViewHolder holder, final int position, @NonNull Request model) {
-                holder.txtOrderId.setText(adapter.getRef(position).getKey());
-                holder.txtOrderStatus.setText(Common.convertCodeToStatus(model.getStatus()));
-                holder.txtOrderPhone.setText(model.getPhone());
-                holder.txtOrderAddress.setText(model.getAddress());
-                holder.txtOrderDate.setText(Common.getData(Long.parseLong(Objects.requireNonNull(adapter.getRef(position).getKey()))));
-
-                holder.btnShipping.setOnClickListener(v -> {
+                orderViewHolder.btnShipping.setOnClickListener(v -> {
                     buildLocationRequest();
                     buildLocationCallBack();
 
@@ -185,13 +181,18 @@ public class HomeActivity extends AppCompatActivity {
                     Common.currentKey = adapter.getRef(position).getKey();
 
                     startActivity(new Intent(HomeActivity.this, TrackingOrderActivity.class));
-
                 });
             }
-        };
 
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
+            @NonNull
+            @Override
+            public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.activity_home, parent, false);
+
+                return new OrderViewHolder(view);
+            }
+        };
     }
 
     private void updateTokenShipper(Task<InstallationTokenResult> token) {
