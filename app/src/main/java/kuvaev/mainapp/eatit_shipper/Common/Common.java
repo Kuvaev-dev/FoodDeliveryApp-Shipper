@@ -17,7 +17,7 @@ import java.util.Map;
 import kuvaev.mainapp.eatit_shipper.Model.Request;
 import kuvaev.mainapp.eatit_shipper.Model.Shipper;
 import kuvaev.mainapp.eatit_shipper.Model.ShippingInformation;
-import kuvaev.mainapp.eatit_shipper.Remote.IGeoCoordinates;
+import kuvaev.mainapp.eatit_shipper.Remote.GeoCoordinateAction;
 import kuvaev.mainapp.eatit_shipper.Remote.RetrofitClient;
 
 public class Common {
@@ -82,8 +82,8 @@ public class Common {
                 .addOnFailureListener(e -> Log.d("ERROR", e.getMessage()));
     }
 
-    public static IGeoCoordinates getGeoCodeService(){
-        return RetrofitClient.getClient(baseURL).create(IGeoCoordinates.class);
+    public static GeoCoordinateAction getGeoCodeService(){
+        return RetrofitClient.getClient(baseURL).create(GeoCoordinateAction.class);
     }
 
     public static Bitmap scaleBitmap(Bitmap bitmap, int newWidth, int newHeight){

@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -371,7 +372,7 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
     }
 
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-        android.app.AlertDialog mDialog = new SpotsDialog( TrackingOrder.this);
+        android.app.AlertDialog mDialog = new SpotsDialog(TrackingOrder.this);
 
         @Override
         protected void onPreExecute() {
