@@ -8,7 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,9 +17,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class DirectionJSONParser {
-     List<List<HashMap<String, String>>> message;
-     public static SimpleDateFormat DBFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-
     /**
      * Receives a JSONObject and returns a list of lists containing latitude and longitude
      */
@@ -57,7 +53,7 @@ public class DirectionJSONParser {
 
                     /* Traversing all steps */
                     for (int k = 0; k < jSteps.length(); k++) {
-                        String polyline = "";
+                        String polyline;
                         polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
                         List list = decodePoly(polyline);
 
@@ -81,14 +77,6 @@ public class DirectionJSONParser {
                     Common.DURATION = hours + " hours " + minutes + " mins " + seconds + " seconds ";
 
                     SimpleDateFormat DBFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-                    String currentDateandTime = DBFormat.format(new Date());
-
-                    Date date = null;
-                    try {
-                        date = DBFormat.parse(currentDateandTime);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(getFormatDate());
