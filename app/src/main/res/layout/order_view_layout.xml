@@ -1,99 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
+    android:backgroundTint="@color/colorGold3"
     app:cardElevation="4dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
             android:layout_gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
             android:baselineAligned="false">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_weight="9"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
+                    android:text="@string/ovl_order_id"
                     android:textAllCaps="true"
-                    android:textStyle="bold"
-                    android:text="@string/tv_order_id_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/order_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
+                    android:text="@string/ovl_order_date"
                     android:textAllCaps="true"
-                    android:textStyle="italic"
-                    android:text="@string/tv_order_date_text"
+                    android:textStyle="italic"/>
+
+                <TextView
+                    android:id="@+id/order_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical|start"
+                    android:text="@string/onl_order_name"
+                    android:textAllCaps="true"
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
+                    android:text="@string/ovl_status"
+                    android:textColor="@android:color/holo_red_dark"
                     android:textAllCaps="true"
-                    android:textStyle="italic"
-                    android:text="@string/tv_status_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/order_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
+                    android:text="@string/ovl_phone_number_val"
                     android:textAllCaps="true"
-                    android:textStyle="italic"
-                    android:text="@string/tv_phone_number_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/order_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical|start"
+                    android:text="@string/ovl_address"
                     android:textAllCaps="true"
-                    android:textStyle="italic"
-                    android:text="@string/tv_address_text"
+                    android:textStyle="italic"/>
+
+                <TextView
+                    android:id="@+id/order_price"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical|start"
+                    android:text="@string/ovl_price"
+                    android:textAllCaps="true"
+                    android:textStyle="italic"/>
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:weightSum="1"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <info.hoang8f.widget.FButton
                 android:id="@+id/btnShipping"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/fbutton_shipping_text"
-                android:textColor="@color/white"
-                app:cornerRadius="0dp"
-                app:fButtonColor="@android:color/white"/>
+                android:text="@string/ovl_shipping"
+                android:textColor="@color/colorWhite"
+                app:cornerRadius="8dp"
+                app:shadowColor="@android:color/black"
+                app:shadowEnabled="true"
+                app:shadowHeight="5dp"
+                app:fButtonColor="@color/fbutton_color_green_sea" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

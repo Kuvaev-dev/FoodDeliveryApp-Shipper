@@ -1,11 +1,9 @@
 package kuvaev.mainapp.eatit_shipper.Model;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.installations.InstallationTokenResult;
-
 public class Token {
-    private String token;
-    private boolean isServerToken;
+
+    public String token;
+    public boolean isServerToken;
 
     public Token() { }
 
@@ -13,8 +11,6 @@ public class Token {
         this.token = token;
         this.isServerToken = isServerToken;
     }
-
-    public Token(Task<InstallationTokenResult> token, boolean isServerToken) { }
 
     public String getToken() {
         return token;

@@ -1,7 +1,8 @@
 package kuvaev.mainapp.eatit_shipper.Model;
 
 public class Shipper {
-    private String name , phone , password;
+
+    private String name,phone,password;
 
     public Shipper() { }
 

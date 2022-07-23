@@ -15,4 +15,24 @@
     <string name="tv_phone_number_text">123456789</string>
     <string name="tv_address_text">Address</string>
     <string name="fbutton_shipping_text">Shipping</string>
+    <string name="am_sign_in_as_shipper">Sign In As Shipper</string>
+    <string name="asi_shipper">Shipper</string>
+    <string name="asi_phone">Phone</string>
+    <string name="asi_phone_number_val">+60135418272</string>
+    <string name="asi_password">Password</string>
+    <string name="asi_password_val">123</string>
+    <string name="asi_sign_in_as_shipper">Sign In As Shipper</string>
+    <string name="ato_distance">DISTANCE:</string>
+    <string name="ato_duration">DURATION:</string>
+    <string name="ato_time_reach">TIME REACH:</string>
+    <string name="ato_call">CALL</string>
+    <string name="ato_shipped">SHIPPED</string>
+    <string name="ovl_order_id">Order Id</string>
+    <string name="ovl_order_date">Order Date</string>
+    <string name="onl_order_name">Order Name</string>
+    <string name="ovl_status">Status</string>
+    <string name="ovl_phone_number_val">0128688032</string>
+    <string name="ovl_address">Address</string>
+    <string name="ovl_price">Price</string>
+    <string name="ovl_shipping">Shipping</string>
 </resources>
