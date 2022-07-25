@@ -62,7 +62,7 @@ public class Common {
         shippingInformation.setLat(mLastLocation.getLatitude());
         shippingInformation.setLng(mLastLocation.getLongitude());
 
-        // create new item on shippingInformation table
+        //create new item on shippingInformation table
         FirebaseDatabase.getInstance()
                 .getReference(SHIPPER_INFO_TABLE)
                 .child(key)

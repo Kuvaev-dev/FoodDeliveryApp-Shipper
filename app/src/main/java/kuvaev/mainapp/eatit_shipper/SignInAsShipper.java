@@ -3,12 +3,13 @@ package kuvaev.mainapp.eatit_shipper;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import java.util.Objects;
 
 import info.hoang8f.widget.FButton;
 import kuvaev.mainapp.eatit_shipper.Common.Common;
@@ -47,9 +50,9 @@ public class SignInAsShipper extends AppCompatActivity {
 
         setContentView(R.layout.activity_signin);
 
-        btn_signIn = (FButton)findViewById(R.id.btnSignIn);
-        edtPhone = (MaterialEditText)findViewById(R.id.edtPhone);
-        edtPassword = (MaterialEditText)findViewById(R.id.edtPassword);
+        btn_signIn = findViewById(R.id.btnSignIn);
+        edtPhone = findViewById(R.id.edtPhone);
+        edtPassword = findViewById(R.id.edtPassword);
         edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edtPassword.setTransformationMethod(new PasswordTransformationMethod());
 
@@ -57,7 +60,8 @@ public class SignInAsShipper extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         shippers = database.getReference(Common.SHIPPER_TABLE);
 
-        btn_signIn.setOnClickListener(v -> login(edtPhone.getText().toString(), edtPassword.getText().toString()));
+        btn_signIn.setOnClickListener(v -> login(Objects.requireNonNull(edtPhone.getText()).toString(),
+                Objects.requireNonNull(edtPassword.getText()).toString()));
     }
 
     private void login(String phone, final String password) {

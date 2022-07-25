@@ -55,13 +55,13 @@ public class DirectionJSONParser {
                     for (int k = 0; k < jSteps.length(); k++) {
                         String polyline;
                         polyline = (String) ((JSONObject) ((JSONObject) jSteps.get(k)).get("polyline")).get("points");
-                        List list = decodePoly(polyline);
+                        List<LatLng> list = decodePoly(polyline);
 
                         /* Traversing all points */
                         for (int l = 0; l < list.size(); l++) {
                             HashMap<String, String> hm = new HashMap<>();
-                            hm.put("lat", Double.toString(((LatLng) list.get(l)).latitude));
-                            hm.put("lng", Double.toString(((LatLng) list.get(l)).longitude));
+                            hm.put("lat", Double.toString(list.get(l).latitude));
+                            hm.put("lng", Double.toString(list.get(l).longitude));
                             path.add(hm);
                         }
                     }
