@@ -11,16 +11,16 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Looper;
-import android.support.v4.app.ActivityCompat;
 
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,6 +28,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import info.hoang8f.widget.FButton;
 import kuvaev.mainapp.eatit_shipper.Common.Common;
 import kuvaev.mainapp.eatit_shipper.Common.DirectionJSONParser;
@@ -98,11 +100,11 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
         assert false;
         mapFragment.getMapAsync(this);
 
-        btn_call = (FButton) findViewById(R.id.btnCall);
-        btn_shipped = (FButton) findViewById(R.id.btnShipped);
-        distance = (TextView) findViewById(R.id.display_distance);
-        duration = (TextView) findViewById(R.id.display_duration);
-        time = (TextView) findViewById(R.id.display_expected_hour);
+        btn_call = findViewById(R.id.btnCall);
+        btn_shipped = findViewById(R.id.btnShipped);
+        distance = findViewById(R.id.display_distance);
+        duration = findViewById(R.id.display_duration);
+        time = findViewById(R.id.display_expected_hour);
 
         btn_call.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_CALL);
@@ -284,8 +286,8 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
 
 
     private void buildLocationRequest() {
-        locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(Priority.PRIORITY_HIGH_ACCURACY);
         locationRequest.setSmallestDisplacement(10f);
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(3000);
@@ -372,13 +374,13 @@ public class TrackingOrder extends FragmentActivity implements OnMapReadyCallbac
     }
 
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-        android.app.AlertDialog mDialog = new SpotsDialog(TrackingOrder.this);
+        SweetAlertDialog mDialog = new SweetAlertDialog(TrackingOrder.this);
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             mDialog.show();
-            mDialog.setMessage("Please waiting...");
+            mDialog.setTitle("Please waiting...");
         }
 
         @Override
